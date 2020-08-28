@@ -1,0 +1,164 @@
+$ Ficha personagem $
+[Nome jogador] = # entrada no formulário
+[Habilidade jogador] = <um dado> + {seis}
+[Energia jogador] = <dois dados> + {doze}
+[Sorte] = <um dado> + {seis}
+[Magia] = <dois dados> + {seis}
+[encantos] = escolher a quantidade de acordo com [magia]
+# os bonus nunca podem exceder as informações iniciais, ao menos que a pagina fale para exceder
+
+$ Combate $
+# lançar informação da criatura no [inimigos encontrados]
+força de ataque da criatura = <dois dados> + indice [Habilidade criatura]
+força de ataque do jogador = <dois dados> + indice atual de [Habilidade jogador]
+subtrai {dois} da [Energia jogador ou criatura] devido ao dano para quem tiver a menor força de ataque, começa nova rodada # pode usar [Sorte]
+ou
+se for igual nada acontece, começa nova rodada
+repetir até zerar a [Energia jogador] (morte)
+
+$ Fuga $ # quando a pagina permitir
+subtrai {dois} da [Energia jogador] pela covardia # pode usar [Sorte]
+
+$ Sorte $
+<dois dados> se for menor ou igual ao indice [Sorte jogador] obteve exito, se não consequências
+subtrai {um} do indice de [Sorte jogador]
+	$ Testar a sua sorte $
+	# descrito em cada página
+	$ Sorte em batalha $
+	teve [Sorte] no dano a criatura, subtrai {quatro} ao invés de {dois} a [Energia critatura], se não, subtrai {um} a [Energia critatura]	
+	teve [Sorte] no dano ao jogador, subtrai {quatro} ao invés de {dois} a [Energia jogador], se não, subtrai {três} a [Energia jogador]
+
+$ Modificadores [Habilidade, Energia e Sorte] $ # o indice inicial somente pode ser ultrapassado se a pagina solicitar que ocorra
+[Habilidade]
+# somente uma arma mágica por vez 
+# pode ser recuperado com [Encanto da Habilidade]
+[Energia]
+# pode ser recuperado com [Encanto da Energia]
+[Sorte]
+# pode ser recuperado pelas páginas
+# pode ser recuperado com [Encanto da Sorte]
+
+$ Magia $
+[magia] = quantidade de encantos que o jogador pode escolher
+# se usar um encanto, mesmo que não tenha efeito, ele é subtraído
+	[Cópia de Criatura]
+	# copia a criatura que está lutando, luta contra a original
+	[Percepção Extra-Sensorial]
+	# de acordo com a página
+	[Fogo]
+	# de acordo com a página 
+	[Ouro dos Tolos]
+	# de acordo com a página 
+	[Ilusão]
+	# de acordo com a página 
+	[Levitação]
+	# de acordo com a página 
+	[Sorte]
+	# recupera metade do seu indice [Sorte] truncado, não ultrapassa o inicial, a qualquer momento, não pode ser usado em batalha
+	[Escudo]
+	# de acordo com a página 
+	[Habilidade]
+	# recupera metade do seu indice [Habilidade jogador] truncado, não ultrapassa o inicial, a qualquer momento, não pode ser usado em batalha
+	[Energia]
+	# recupera metade do seu indice [Energia jogador] truncado, não ultrapassa o inicial, a qualquer momento, não pode ser usado em batalha
+	[Força]
+	# de acordo com a página
+	[Fraqueza]
+	# de acordo com a página
+
+$ Equipamento $
+inicia com [espada], [armadura de couro], [lanterna], [mochila]
+#podem ser incluidos ou retirados de acordo com a pagina
+
+52 possibilidades:
+
+001 nada               & nada aconteceu
+
+002 fugir              & pode usar a sorte para reduzir o 2 de dano automático
+
+3 jogo-escolha       & jogo especial
+4 jogo-pedra         & jogo especial
+5 jogo-faca          & jogo especial
+
+006 encanto            - nome do encanto
+07 encanto-atributo   - nome do encanto - ação                - nome atributo       - quantidade
+08 encanto-escolha    * escolha do usuário
+09 encanto-item       - nome do encanto - ação                - nome do item
+10 encanto-luta       - nome do encanto - nome criatura       - habilidade          - energia
+11 encanto-luta-atri  - nome do encanto - nome criatura       - habilidade          - energia       - ação            - nome atributo - quantidade
+12 encanto-luta-enca  - nome do encanto - nome criatura       - habilidade          - energia       - nome do encanto - quantidade reduzir habilidade criatura
+13 encanto-luta-dupla - nome do encanto - nome criatura       - habilidade          - energia       - nome criatura   - habilidade    - energia
+14 encanto-teste      - nome do encanto - atributo teste      - opcao unica sucesso - opcao unica falha
+15 encanto-sala       - nome do encanto - atributo teste      - acao                - nome atributo - quantidade      $ "fim"
+16 encanto-porta      - nome do encanto % condição            - opcao extra         - ação          - nome atributo   - quantidade
+
+17 teste              - atributo teste  - opcao unica sucesso - opcao unica falha
+18 teste-anel         - atributo teste  - "com anel"          - "sem anel"
+19 teste-atributo     - atributo teste  - ação                - atributo            - quantidade
+20 teste-especial     - atributo teste  - opcao extra         - ação                - nome atributo - quantidade
+21 teste-carne        - atributo teste  % condicao            - ação                - nome atributo - quantidade      $ "fim" (se os três acertarem)
+22 teste-porta        - atributo teste  - opcao extra         - ação                - nome atributo - quantidade
+
+23 item               - ação            - nome do item
+24 item-duplo         - ação            - nome do item        - ação                - nome do item
+25 item-teste         - ação            - nome do item        - atributo            - ação          - nome do item
+26 item-laco          - ação            - nome do item        - condicao            - opcao unica sucesso - opcao unica falha
+27 item-atributo      - ação            - nome do item        - ação                - atributo   - quantidade
+28 item-escolha       - ação            * escolha do usuário
+
+29 luta               - nome criatura   - habilidade          - energia
+30 luta-elfo          - nome criatura   - habilidade          - energia             - nome do encanto - quantidade reduzir habilidade criatura - nome do encanto
+31 luta-atributo      - nome criatura   - habilidade          - energia             - ação          - atributo   - quantidade 
+32 luta-fugir         - nome criatura   - habilidade          - energia             % condicao      - opçao extra 
+33 luta-anel          - nome criatura   - habilidade          - energia             % condicao      - quantidade reduzir habilidade criatura 
+34 luta-especial      - nome criatura   - habilidade          - energia             % condicao      - opcao unica falha
+35 luta-tentaculo     - nome criatura   - habilidade          - energia             % condicao      $ "fim"
+36 luta-copia         - nome criatura   - habilidade          - energia
+37 luta-cobra         - nome criatura   - habilidade          - energia             - nome do encanto - acao - nome atributo - quantidade
+38 luta-dupla         - nome criatura   - habilidade          - energia             - nome criatura - habilidade - energia
+39 luta-aliado        - nome criatura   - habilidade          - energia             - nome criatura - habilidade - energia
+40 luta-tripla        - nome criatura   - habilidade          - energia             - nome criatura - habilidade - energia - nome criatura - habilidade - energia
+41 luta-item          - nome criatura   - habilidade          - energia             - ação - nome do item  
+
+42 atributo           - ação            - nome atributo       - quantidade("tudo")
+43 atributo-teste     - ação            - nome atributo       - quantidade          - atributo teste - opcao unica sucesso - opcao unica falha
+44 atributo-item      - ação            - nome atributo       - quantidade          - ação - nome do item
+45 atributo-itens     - ação            - nome atributo       - quantidade          - ação - nome do item - ação - nome do item - ação - nome do item
+46 atributo-escolha   - ação            - nome atributo
+47 atributo-duplo     - ação            - nome atributo       - quantidade("tudo")  - ação          - nome atributo - quantidade("tudo")
+48 atributo-triplo    - ação            - nome atributo       - quantidade          - ação - nome atributo - quantidade - ação - nome atributo - quantidade
+
+49 modificador        - ação            - nome atributo       - quantidade          - nome do encanto
+
+50 facadas            - ação            - nome atributo       * dado (1,2 ou 3) x 2
+
+51 fruta              - ação            - nome atributo       - quantidade          * não pode usar encanto
+
+052 se                 % encanto
+
+Funcionamento do jogo escolha de seis (indice 171, pagina 56):
+
+se tiver ouro é obrigatório jogar
+ao menos 1 peça de ouro
+encanto ouro do tolo vale 10 peças
+rolar um dado, se acerta o premio é 5x a aposta
+
+Funcionamento do jogo Pedra Mágica (indice 278, pagina 84):
+
+se tiver ouro é obrigatório jogar
+ao menos 3 peças de ouro
+ganhar 36 peças de ouro
+perder retira 2 de habilidade e 4 de energia
+um dado pelo numero de jogadores
+dois dados, se maior que 12 o jogador da roda perde, se menor que 12 passa para o proximo e diminui para 11 o limite, se for igual ao limite repete-se a jogada
+depois que a pedra explode o limite retorna a 12 sem o jogador em que a pedra explodiu
+
+Funcionamento do jogo Faca-Faquinha (indice 365, pagina 108):
+
+os premios podem ser (dois encantos extras) ou (50 peças de ouro) ou (Escudo de Armas Encantado, reduz em 2 a habilidade das criaturas oponentes)
+6 punhais (somente um é de verdade, que causa morte)
+oponente primeiro
+um dado, se der 6 é o punhal verdadeiro
+
+
+
